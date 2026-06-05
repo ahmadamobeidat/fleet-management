@@ -1,5 +1,8 @@
 # 🚛 Fleet Tracker Dashboard
 
+## 🌐 Live Demo
+[https://fleet-management-gold-rho.vercel.app/](https://fleet-management-gold-rho.vercel.app/)
+
 A vehicle fleet tracking dashboard built with Next.js 14, Leaflet, Zustand, and React Query.
 Built as part of a Junior React / Next.js Developer Technical Assessment.
 
