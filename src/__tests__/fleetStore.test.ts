@@ -4,14 +4,14 @@ import { Vehicle } from "@/types/vehicle";
 // بيانات مركبة وهمية للاختبار
 const mockVehicle: Vehicle = {
   id: "V001",
-  name: "Truck Alpha",
+  name: "Ahmad",
   speed: 72,
   status: "Moving",
-  lastUpdate: "2024-06-04T10:45:00Z",
+  lastUpdate: "2026-06-04T10:45:00Z",
   route: [
-    { lat: 31.9454, lng: 35.9284, timestamp: "2024-06-04T10:00:00Z" },
-    { lat: 31.9470, lng: 35.9300, timestamp: "2024-06-04T10:05:00Z" },
-    { lat: 31.9490, lng: 35.9325, timestamp: "2024-06-04T10:10:00Z" },
+    { lat: 31.9454, lng: 35.9284, timestamp: "2026-06-04T10:00:00Z" },
+    { lat: 31.9470, lng: 35.9300, timestamp: "2026-06-04T10:05:00Z" },
+    { lat: 31.9490, lng: 35.9325, timestamp: "2026-06-04T10:10:00Z" },
   ],
 };
 
