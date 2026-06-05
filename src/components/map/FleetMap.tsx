@@ -1,28 +1,28 @@
-"use client";
+"use client"
 
-import React, { useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Polyline, useMap } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import { useFleetStore } from "@/store/fleetStore";
-import { Vehicle } from "@/types/vehicle";
-import VehicleMarker from "@/components/vehicle/VehicleMarker";
+import React, { useEffect, useRef } from "react"
+import { MapContainer, TileLayer, Polyline, useMap } from "react-leaflet"
+import "leaflet/dist/leaflet.css"
+import { useFleetStore } from "@/store/fleetStore"
+import { Vehicle } from "@/types/vehicle"
+import VehicleMarker from "@/components/vehicle/VehicleMarker"
 
 function MapFitter({ selectedVehicle }: { selectedVehicle: Vehicle | null }) {
-    const map = useMap();
+    const map = useMap()
     useEffect(() => {
-        if (!selectedVehicle) return;
-        const bounds = selectedVehicle.route.map((p) => [p.lat, p.lng] as [number, number]);
+        if (!selectedVehicle) return
+        const bounds = selectedVehicle.route.map((p) => [p.lat, p.lng] as [number, number])
         if (bounds.length > 0) {
-            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 })
         }
-    }, [selectedVehicle, map]);
-    return null;
+    }, [selectedVehicle, map])
+    return null
 }
 
 function TileLayerByMode({ isDarkMode }: { isDarkMode: boolean }) {
-    const lightTile = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-    const darkTile = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
-    return <TileLayer url={isDarkMode ? darkTile : lightTile} />;
+    const light = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    const dark = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    return <TileLayer url={isDarkMode ? dark : light} />
 }
 
 export default function FleetMap() {
@@ -34,52 +34,50 @@ export default function FleetMap() {
         currentPositionIndex,
         tickPosition,
         isDarkMode,
-    } = useFleetStore();
+    } = useFleetStore()
 
-    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-    // مرجع ثابت للـ container حتى لا يتغير
-    const mapContainerRef = useRef<HTMLDivElement>(null);
+    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
+            clearInterval(intervalRef.current)
+            intervalRef.current = null
         }
-        if (playbackState !== "playing") return;
+        if (playbackState !== "playing") return
 
         intervalRef.current = setInterval(() => {
-            vehicles.forEach((vehicle) => {
-                const idx = currentPositionIndex[vehicle.id] ?? 0;
-                if (idx < vehicle.route.length - 1) {
-                    tickPosition(vehicle.id);
+            vehicles.forEach((v) => {
+                const idx = currentPositionIndex[v.id] ?? 0
+                if (idx < v.route.length - 1) {
+                    tickPosition(v.id)
                 }
-            });
-        }, 1000);
+            })
+        }, 1000)
 
         return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-        };
-    }, [playbackState, vehicles, currentPositionIndex, tickPosition]);
+            if (intervalRef.current) clearInterval(intervalRef.current)
+        }
+    }, [playbackState, vehicles, currentPositionIndex, tickPosition])
 
     return (
-        <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }}>
+        <div ref={containerRef} style={{ width: "100%", height: "100%" }}>
             <MapContainer
                 center={[31.9454, 35.9284]}
                 zoom={13}
                 style={{ width: "100%", height: "100%" }}
-                // منع إعادة إنشاء الخريطة
-                whenReady={() => { }}
+                whenReady={() => {}}
             >
                 <TileLayerByMode isDarkMode={isDarkMode} />
                 <MapFitter selectedVehicle={selectedVehicle} />
 
                 {vehicles.map((vehicle) => {
-                    const idx = currentPositionIndex[vehicle.id] ?? 0;
-                    const position = vehicle.route[idx];
-                    const isSelected = selectedVehicle?.id === vehicle.id;
+                    const idx = currentPositionIndex[vehicle.id] ?? 0
+                    const position = vehicle.route[idx]
+                    const isSelected = selectedVehicle?.id === vehicle.id
 
-                    const fullRoute = vehicle.route.map((p) => [p.lat, p.lng] as [number, number]);
-                    const traveled = fullRoute.slice(0, idx + 1);
+                    const fullRoute = vehicle.route.map((p) => [p.lat, p.lng] as [number, number])
+                    const traveled = fullRoute.slice(0, idx + 1)
 
                     return (
                         <React.Fragment key={vehicle.id}>
@@ -89,7 +87,7 @@ export default function FleetMap() {
                                     color: isSelected ? "#3B82F6" : "#9CA3AF",
                                     weight: 2,
                                     opacity: 0.3,
-                                    dashArray: "6 4"
+                                    dashArray: "6 4",
                                 }}
                             />
                             {traveled.length > 1 && (
@@ -98,7 +96,7 @@ export default function FleetMap() {
                                     pathOptions={{
                                         color: isSelected ? "#3B82F6" : "#10B981",
                                         weight: 3,
-                                        opacity: 0.8
+                                        opacity: 0.8,
                                     }}
                                 />
                             )}
@@ -109,9 +107,9 @@ export default function FleetMap() {
                                 onClick={() => selectVehicle(isSelected ? null : vehicle)}
                             />
                         </React.Fragment>
-                    );
+                    )
                 })}
             </MapContainer>
         </div>
-    );
+    )
 }
