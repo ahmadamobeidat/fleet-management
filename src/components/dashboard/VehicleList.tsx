@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useFleetStore } from "@/store/fleetStore";
 import { Vehicle } from "@/types/vehicle";
+import StatsPanel from "@/components/dashboard/StatsPanel";
 
 // بطاقة مركبة واحدة
 function VehicleCard({
@@ -17,8 +18,8 @@ function VehicleCard({
         <button
             onClick={onClick}
             className={`w-full text-left p-3 rounded-xl border transition-all ${isSelected
-                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                    : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300"
+                ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300"
                 }`}
         >
             {/* الاسم والحالة */}
@@ -28,8 +29,8 @@ function VehicleCard({
                     <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{vehicle.name}</span>
                 </div>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${vehicle.status === "Moving"
-                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                        : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
+                    ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                    : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
                     }`}>
                     {vehicle.status.toUpperCase()}
                 </span>
@@ -97,7 +98,7 @@ export default function VehicleList() {
                 </div>
             </div>
 
-            {/* القائمة */}
+            {/* القائمة قابلة للتمرير */}
             <div className="flex-1 overflow-y-auto p-3 space-y-2">
                 {filtered.length === 0 ? (
                     <div className="text-center text-sm text-gray-400 mt-8">No vehicles found</div>
@@ -113,6 +114,10 @@ export default function VehicleList() {
                     ))
                 )}
             </div>
+
+            {/* لوحة الإحصائيات الحية في أسفل الشريط الجانبي */}
+            <StatsPanel />
+
         </div>
     );
 }
