@@ -167,10 +167,11 @@ function Dashboard() {
       </aside>
 
       {/* ===== Main Map Area ===== */}
+
       <main className="flex-1 flex flex-col overflow-hidden">
         <PlaybackControls />
         <div className="flex-1 relative">
-          <FleetMap />
+          <FleetMap key="fleet-map" />
         </div>
       </main>
     </div>

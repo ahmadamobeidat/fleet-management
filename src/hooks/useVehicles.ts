@@ -4,18 +4,15 @@ import { Vehicle } from "@/types/vehicle";
 
 export function useVehicles() {
     return useQuery<Vehicle[]>({
-        queryKey: ["vehicles"], // مفتاح التخزين المؤقت
-
+        queryKey: ["vehicles"],
         queryFn: async () => {
             const response = await fetch("/api/vehicles");
-            if (!response.ok) {
-                throw new Error("Failed to fetch vehicles");
-            }
+            if (!response.ok) throw new Error("Failed to fetch vehicles");
             return response.json();
         },
-
         retry: 1,
-        refetchInterval: 30000,    // تحديث كل 30 ثانية
+        refetchInterval: false,
         refetchOnWindowFocus: false,
+        staleTime: Infinity,
     });
 }
